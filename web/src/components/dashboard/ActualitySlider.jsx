@@ -1,59 +1,64 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // <--- import
 
-// Dummy data
-const cardsData = [
+// Notices data
+const noticesData = [
   {
-    title: "New Semester Begins",
-    description: "Classes start on September 1st. Get ready with your study materials!",
-    date: "2025-09-01",
+    id: 1,
+    title: "JIPO 2024 – Journée d'intégration",
+    content: "Join us on 23 October 2024 for the Integration Day! Stay tuned for updates.",
+
+    pinned: true,
+    read: false,
   },
   {
-    title: "Library Renovation",
-    description: "The library will be closed for renovation from July 15th to August 15th.",
-    date: "2025-07-15",
+    id: 2,
+    title: "CTRL + F Event",
+    content: "Your shortcut to tech! GDGC ISSATSO invites all students to the technology exploration event.",
+
+    pinned: true,
+    read: false,
   },
   {
-    title: "Guest Lecture: AI in 2025",
-    description: "Join us for a guest lecture on the future of AI on August 20th.",
-    date: "2025-08-20",
+    id: 3,
+    title: "Schedule Updated",
+    content: "The class schedule has been updated. Last update: 18/10/2025",
+
+    pinned: false,
+    read: false,
   },
   {
-    title: "Exam Schedule Released",
-    description: "Check out the exam timetable for the Fall semester.",
-    date: "2025-10-01",
-  },
-  {
-    title: "Sports Fest",
-    description: "Annual sports festival will take place on September 25th.",
-    date: "2025-09-25",
+    id: 4,
+    title: "Library Maintenance",
+    content: "The library will be closed on Friday for maintenance.",
+
+    pinned: false,
+    read: true,
   },
 ];
 
-// Dummy avatars
-const avatars = [
-  "https://i.pravatar.cc/40?img=1",
-  "https://i.pravatar.cc/40?img=2",
-  "https://i.pravatar.cc/40?img=3",
-];
+// Sort so pinned notices appear first
+const sortedNotices = [...noticesData].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
 
 export default function ActualitySlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+  const navigate = useNavigate(); // <--- use navigate
 
   const paginate = (newDirection) => {
     setDirection(newDirection);
     setCurrentIndex((prev) =>
       newDirection === 1
-        ? (prev + 1) % cardsData.length
-        : (prev - 1 + cardsData.length) % cardsData.length
+        ? (prev + 1) % sortedNotices.length
+        : (prev - 1 + sortedNotices.length) % sortedNotices.length
     );
   };
 
   return (
     <div className="lg:w-full w-full mx-auto relative select-none">
-      <div className="relative overflow-hidden rounded-2xl  bg-gradient-to-b from-[#8e91f9] via-[#6470ff] to-[#516eff] text-white p-6 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-[#8e91f9] via-[#6470ff] to-[#516eff] text-white p-6 shadow-xl">
         {/* Arrows */}
         <button
           onClick={() => paginate(-1)}
@@ -70,52 +75,44 @@ export default function ActualitySlider() {
 
         {/* Slider Content */}
         <div className="flex items-center justify-between">
-          {/* Left: Title & Description */}
           <div className="w-2/3">
-          <div className="relative h-14">
-            <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
-                key={currentIndex}
-                custom={direction}
-                initial={{ x: direction > 0 ? 300 : -300 }}
-                animate={{ x: 0 }}
-                exit={{ x: direction < 0 ? 300 : -300 }}
-                transition={{ duration: 0.5 }}
-                className="absolute top-0 left-0 w-full space-y-4"
-              >
-                <h2 className="lg:text-3xl text-2xl lg:font-bold font-semibold">{cardsData[currentIndex].title}</h2>
-                <p className="text-gray-100 hidden lg:block">{cardsData[currentIndex].description}</p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-            <div className="mt-6 flex items-center space-x-4">
-              <button className="bg-yellow-400 cursor-pointer text-white rounded-full px-6 py-2 font-semibold hover:bg-yellow-500 transition">
-                View All
-              </button>
-              <p className="text-sm text-gray-200">{cardsData[currentIndex].date}</p>
+            <div className="relative h-20">
+              <AnimatePresence initial={false} custom={direction} mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  custom={direction}
+                  initial={{ x: direction > 0 ? 300 : -300, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: direction < 0 ? 300 : -300, opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute top-0 left-0 w-full space-y-2"
+                >
+                  <h2 className="lg:text-3xl text-2xl lg:font-bold font-semibold">
+                    {sortedNotices[currentIndex].title}
+                  </h2>
+                  <p className="text-gray-100 lg:text-lg">
+                    {sortedNotices[currentIndex].content}
+                  </p>
+                  <p className="text-sm text-gray-200">{sortedNotices[currentIndex].date}</p>
+                </motion.div>
+              </AnimatePresence>
             </div>
-          </div>
 
-          {/* Right: Avatars */}
-          <div className="w-1/3 flex justify-end items-center">
-            <div className="flex -space-x-3">
-              {avatars.map((url, idx) => (
-                <img
-                  key={idx}
-                  src={url}
-                  alt="Friend"
-                  className="w-10 h-10 rounded-full border-2 border-white hover:scale-105 transition-transform"
-                />
-              ))}
+            <div className="mt-4">
+              <button
+                onClick={() => navigate("/notices")} // <--- navigate to notices page
+                className="bg-yellow-400 cursor-pointer text-white rounded-full px-6 py-2 font-semibold hover:bg-yellow-500 transition"
+              >
+                View All Notices
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Pagination Dots */}
-      <div className="flex justify-center space-x-2 mt-2">
-        {cardsData.map((_, idx) => (
+      <div className="flex justify-center space-x-2 mt-3">
+        {sortedNotices.map((_, idx) => (
           <button
             key={idx}
             onClick={() => {

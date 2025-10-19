@@ -23,14 +23,15 @@ const studentPages = [
   { title: "My Subjects", icon: Book, path: "/dashboard/student/mysubjects" }, // View enrolled courses
   { title: "Schedule", icon: Calendar, path: "/dashboard/student/schedule" }, // Timetable
   { title: "Teachers", icon: Users, path: "/dashboard/student/teachers" }, // View profiles & contact teachers
+  { title: "Absence/Presence ", icon: UserCircle, path: "/dashboard/student/absence" },
   { title: "Documents", icon: FileText, path: "/dashboard/student/documents" }, // Access shared docs
   { title: "ExtraSessions", icon: CalendarClock, path: "/dashboard/student/extrasessions" }, // Club/School Events
   { title: "GroupList", icon: ClipboardList, path: "/dashboard/student/GroupList" }, // group list
   { title: "Results", icon: FileCheck2, path: "/dashboard/student/results" }, // Grades
   
-  { title: "Notices", icon: Bell, path: "/dashboard/student/notices" }, // Official announcements
+  { title: "Notices", icon: Bell, path: "/dashboard/student/notices" },
   
-  { title: "Profile", icon: UserCircle, path: "/dashboard/student/profile" }, // Edit info / change password
+   // Edit info / change password
 ];
 
 export default function StudentDashboardLayout() {

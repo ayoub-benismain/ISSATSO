@@ -2,14 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { Menu, Bell, ChevronDown, User, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-
-
 export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token }) {
   const profileActions = [
-  { name: "Profile", icon: <User className="w-4 h-4 text-blue-400" />, path: `dashboard/${user.role}/profile` },
-  { name: "Logout", icon: <LogOut className="w-4 h-4 text-red-500" />, path: "/logout" },
-];
-
+    {
+      name: "Profile",
+      icon: <User className="w-4 h-4 text-blue-400" />,
+      path: `/dashboard/${user.role}/profile`, // ✅ absolute path
+    },
+    { name: "Logout", icon: <LogOut className="w-4 h-4 text-red-500" />, path: "/logout" },
+  ];
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -18,32 +19,26 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
   const notifRef = useRef();
   const navigate = useNavigate();
 
-useEffect(() => {
-
-  
-  
-  const fetchNotifications = async () => {
-    try {
-      const res = await fetch(`http://localhost:5000/api/dashboard/notifications`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      alert()
-      setNotifications(
-        data.slice(0, 5).map(n => ({
-          ...n,
-          read_status: Boolean(n.read_status),
-          pinned: Boolean(n.pinned),
-        }))
-      );
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-   fetchNotifications();
-}, []);
-
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/api/dashboard/notifications`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setNotifications(
+          data.slice(0, 5).map((n) => ({
+            ...n,
+            read_status: Boolean(n.read_status),
+            pinned: Boolean(n.pinned),
+          }))
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchNotifications();
+  }, []);
 
   const handleMarkRead = async (id) => {
     try {
@@ -129,10 +124,16 @@ useEffect(() => {
                   >
                     <div onClick={() => handleMarkRead(notice.id)}>{notice.message}</div>
                     <div className="flex items-center gap-2">
-                      <button onClick={() => handleTogglePin(notice.id)} className="text-blue-600 hover:text-blue-800">
+                      <button
+                        onClick={() => handleTogglePin(notice.id)}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
                         {notice.pinned ? "📌" : "📍"}
                       </button>
-                      <button onClick={() => handleDelete(notice.id)} className="text-red-600 hover:text-red-800">
+                      <button
+                        onClick={() => handleDelete(notice.id)}
+                        className="text-red-600 hover:text-red-800"
+                      >
                         ❌
                       </button>
                     </div>
@@ -154,28 +155,32 @@ useEffect(() => {
               alt="Profile"
               className="w-8 h-8 rounded-full object-cover border border-gray-300/50"
             />
-            <span className="text-sm font-medium">{user?.name || "User"}</span>
+            <span className="text-sm font-medium">{user?.name || "Ayoub"}</span>
             <ChevronDown className="w-4 h-4 text-gray-600" />
           </button>
 
-          {profileOpen && (
-            <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg z-30 p-3 border border-gray-200">
-              <ul className="text-sm space-y-2">
-                {profileActions.map((action) => (
-                  <li
-                    key={action.name}
-                    onClick={() => navigate(action.path)}
-                    className={`flex items-center gap-2 p-2 rounded-md cursor-pointer hover:bg-gray-100 transition ${
-                      action.name === "Logout" ? "text-red-500 font-semibold" : "text-gray-800"
-                    }`}
-                  >
-                    {action.icon}
-                    <span>{action.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+            {profileOpen && (
+              <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg z-30 p-3 border border-gray-200">
+                <ul className="text-sm space-y-2">
+                  {profileActions.map((action) => (
+                    <li
+                      key={action.name}
+                      onClick={() => {
+                        setProfileOpen(false); // ✅ close dropdown
+                        navigate(action.path); // navigate to route
+                      }}
+                      className={`flex items-center gap-2 p-2 rounded-md cursor-pointer hover:bg-gray-100 transition ${
+                        action.name === "Logout" ? "text-red-500 font-semibold" : "text-gray-800"
+                      }`}
+                    >
+                      {action.icon}
+                      <span>{action.name}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
         </div>
       </div>
     </header>

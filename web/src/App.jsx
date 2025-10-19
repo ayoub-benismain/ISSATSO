@@ -22,7 +22,7 @@ import Results from "./pages/dashboard/student/Results";
 import ScheduleStudent from "./pages/dashboard/student/Schedule";
 import NoticesStudent from "./pages/dashboard/student/Notices";
 import ExtraSessions from "./pages/dashboard/student/ExtraSessions";
-import ProfileStudent from "./pages/dashboard/student/Profile";
+import Absence from "./pages/dashboard/student/Absence";
 
 // Teacher Pages
 import TeacherHome from "./pages/dashboard/teacher/TeacherHome";
@@ -69,7 +69,7 @@ export default function App() {
             <Route path="schedule" element={<ScheduleStudent />} />
             <Route path="notices" element={<NoticesStudent />} />
             <Route path="extrasessions" element={<ExtraSessions />} />
-            <Route path="profile" element={<ProfileStudent />} />
+            <Route path="absence" element={<Absence />} />
             
           </Route>
 

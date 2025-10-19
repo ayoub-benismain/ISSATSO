@@ -3,7 +3,7 @@ import React from "react";
 export default function ScheduleStudent() {
   const studentInfo = {
     name: "Ayoub Smaeen",
-    level: "ING-A2",
+    level: "LSI-A2-02",
   };
 
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -16,49 +16,31 @@ export default function ScheduleStudent() {
     "16:20 - 17:50",
   ];
 
-  // Full schedule for all slots
-  const schedule = {
-    Monday: {
-      "08:00 - 09:30": { course: "Web Development", teacher: "Dr. Amira Ben Salah", room: "B101", type: "Cours" },
-      "09:40 - 11:10": { course: "Databases", teacher: "Mr. Mohamed Trabelsi", room: "A203", type: "TD" },
-      "11:20 - 12:50": { course: "Mathematics", teacher: "Dr. Sana Khelifa", room: "C202", type: "Cours" },
-      "13:00 - 14:30": { course: "Networks", teacher: "Eng. Salma Ferchichi", room: "D101", type: "TP" },
-      "14:40 - 16:10": { course: "Artificial Intelligence", teacher: "Dr. Fethi Krichen", room: "Lab 3", type: "Cours" },
-      "16:20 - 17:50": { course: "Software Engineering", teacher: "Dr. Hichem Touil", room: "E105", type: "TD" },
-    },
-    Tuesday: {
-      "08:00 - 09:30": { course: "Mathematics", teacher: "Dr. Sana Khelifa", room: "C202", type: "Cours" },
-      "09:40 - 11:10": { course: "Networks", teacher: "Eng. Salma Ferchichi", room: "D101", type: "Cours" },
-      "11:20 - 12:50": { course: "Web Development", teacher: "Dr. Amira Ben Salah", room: "B101", type: "TD" },
-      "13:00 - 14:30": { course: "Databases", teacher: "Mr. Mohamed Trabelsi", room: "A203", type: "TD" },
-      "14:40 - 16:10": { course: "Software Engineering", teacher: "Dr. Hichem Touil", room: "E105", type: "TP" },
-      "16:20 - 17:50": { course: "Artificial Intelligence", teacher: "Dr. Fethi Krichen", room: "Lab 3", type: "Cours" },
-    },
-    Wednesday: {
-      "08:00 - 09:30": { course: "Databases", teacher: "Mr. Mohamed Trabelsi", room: "A203", type: "Cours" },
-      "09:40 - 11:10": { course: "Artificial Intelligence", teacher: "Dr. Fethi Krichen", room: "Lab 3", type: "TP" },
-      "11:20 - 12:50": { course: "Networks", teacher: "Eng. Salma Ferchichi", room: "D101", type: "Cours" },
-      "13:00 - 14:30": { course: "Software Engineering", teacher: "Dr. Hichem Touil", room: "E105", type: "TD" },
-      "14:40 - 16:10": { course: "Web Development", teacher: "Dr. Amira Ben Salah", room: "B101", type: "Cours" },
-      "16:20 - 17:50": { course: "Mathematics", teacher: "Dr. Sana Khelifa", room: "C202", type: "Cours" },
-    },
-    Thursday: {
-      "08:00 - 09:30": { course: "Networks", teacher: "Eng. Salma Ferchichi", room: "D101", type: "TP" },
-      "09:40 - 11:10": { course: "Databases", teacher: "Mr. Mohamed Trabelsi", room: "A203", type: "Cours" },
-      "11:20 - 12:50": { course: "Software Engineering", teacher: "Dr. Hichem Touil", room: "E105", type: "TD" },
-      "13:00 - 14:30": { course: "Mathematics", teacher: "Dr. Sana Khelifa", room: "C202", type: "Cours" },
-      "14:40 - 16:10": { course: "Artificial Intelligence", teacher: "Dr. Fethi Krichen", room: "Lab 3", type: "TP" },
-      "16:20 - 17:50": { course: "Web Development", teacher: "Dr. Amira Ben Salah", room: "B101", type: "TD" },
-    },
-    Friday: {
-      "08:00 - 09:30": { course: "Web Development", teacher: "Dr. Amira Ben Salah", room: "B101", type: "Cours" },
-      "09:40 - 11:10": { course: "Databases", teacher: "Mr. Mohamed Trabelsi", room: "A203", type: "TD" },
-      "11:20 - 12:50": { course: "Networks", teacher: "Eng. Salma Ferchichi", room: "D101", type: "Cours" },
-      "13:00 - 14:30": { course: "Software Engineering", teacher: "Dr. Hichem Touil", room: "E105", type: "TP" },
-      "14:40 - 16:10": { course: "Mathematics", teacher: "Dr. Sana Khelifa", room: "C202", type: "Cours" },
-      "16:20 - 17:50": { course: "Artificial Intelligence", teacher: "Dr. Fethi Krichen", room: "Lab 3", type: "Cours" },
-    },
-  };
+  // Your Semester 1 subjects with types (Cours, TD, TP)
+  const semesterSubjects = [
+    { course: "Probabilité et statistique", type: "Cours", teacher: "Dr. Sana Khelifa", room: "A101" },
+    { course: "Théorie des langages et des Automates", type: "TD", teacher: "Mr. Fethi Krichen", room: "B203" },
+    { course: "Graphes et optimisation", type: "Cours", teacher: "Dr. Amira Ben Salah", room: "C302" },
+    { course: "Conception des Systèmes d'Information", type: "Cours", teacher: "Dr. Hichem Touil", room: "D101" },
+    { course: "Programmation Java", type: "TP", teacher: "Eng. Salma Ferchichi", room: "Lab 2" },
+    { course: "Ingénierie des Bases de Données", type: "TD", teacher: "Mr. Mohamed Trabelsi", room: "A203" },
+    { course: "Services des Réseaux", type: "TP", teacher: "Eng. Salma Ferchichi", room: "Lab 1" },
+    { course: "Anglais 3", type: "Cours", teacher: "Mrs. Amira Ben Salah", room: "B101" },
+    { course: "Gestion d'entreprise", type: "Cours", teacher: "Mr. Fethi Krichen", room: "C202" },
+    { course: "Serious Gaming Fundamentals", type: "TD", teacher: "Dr. Sana Khelifa", room: "Lab 3" },
+    { course: "Mobile Game Programming", type: "TP", teacher: "Eng. Salma Ferchichi", room: "Lab 2" },
+  ];
+
+  // Fill a weekly schedule
+  const schedule = {};
+  days.forEach((day) => {
+    schedule[day] = {};
+    times.forEach((time, index) => {
+      // Cycle through subjects
+      const subj = semesterSubjects[(index + days.indexOf(day)) % semesterSubjects.length];
+      schedule[day][time] = subj;
+    });
+  });
 
   const typeColors = {
     Cours: "from-blue-400 to-blue-600",
@@ -79,27 +61,23 @@ export default function ScheduleStudent() {
 
       <div className="overflow-x-auto rounded-2xl shadow-lg bg-white border border-gray-200">
         <table className="min-w-full border-collapse text-sm md:text-base">
-          <thead>
-            <tr className="bg-gray-100 text-gray-700">
-              <th className="px-4 py-3 font-semibold text-left">Time</th>
-              {days.map(day => <th key={day} className="px-4 py-3 font-semibold text-center">{day}</th>)}
-            </tr>
-          </thead>
           <tbody>
+            <tr className="bg-gray-100 text-gray-700">
+              <td className="px-4 py-3 font-semibold text-left">Time / Day</td>
+              {days.map(day => <td key={day} className="px-4 py-3 font-semibold text-center">{day}</td>)}
+            </tr>
             {times.map(time => (
               <tr key={time} className="border-t border-gray-100 hover:bg-gray-50 transition">
                 <td className="px-4 py-3 text-gray-700 font-medium">{time}</td>
                 {days.map(day => {
-                  const session = schedule[day]?.[time];
-                  const color = session ? typeColors[session.type] : null;
+                  const session = schedule[day][time];
+                  const color = typeColors[session.type];
                   return (
-                    <td key={day} className="px-4 py-3 text-center">
-                      {session ? (
-                        <div className={`px-3 py-2 rounded-xl text-white font-medium shadow-sm bg-gradient-to-r ${color} hover:scale-105 transition-transform`}>
-                          {session.course}<br />
-                          <span className="text-sm opacity-90">{session.teacher} — {session.type} ({session.room})</span>
-                        </div>
-                      ) : <div className="text-gray-300">—</div>}
+                    <td key={day} className="px-2 py-2 text-center">
+                      <div className={`px-2 py-1 rounded-xl text-white font-medium shadow-sm bg-gradient-to-r ${color} hover:scale-105 transition-transform`}>
+                        {session.course}<br/>
+                        <span className="text-xs opacity-90">{session.teacher} — {session.type} ({session.room})</span>
+                      </div>
                     </td>
                   );
                 })}

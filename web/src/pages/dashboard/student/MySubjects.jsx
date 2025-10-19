@@ -4,15 +4,104 @@ import { Search, BookOpen, GraduationCap } from "lucide-react";
 
 const semesterData = {
   "Semester 1": [
-    { code: "CS101", title: "Programming", professor: "Dr. Smith", progress: 85 },
-    { code: "MA101", title: "Calculus I", professor: "Dr. Brown", progress: 70 },
-    { code: "PH101", title: "Physics", professor: "Dr. White", progress: 50 },
+    {
+      module: "Probabilité",
+      type: "UE Fondamentale",
+      subjects: [
+        { name: "Probabilité et statistique", coeff: 2, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
+    {
+      module: "Automates et Optimisation",
+      type: "UE Fondamentale",
+      subjects: [
+        { name: "Théorie des langages et des Automates", coeff: 1, moyenne: "(3DS+7EX)/10" },
+        { name: "Graphes et optimisation", coeff: 1, moyenne: "(3DS+7EX)/10" },
+      ],
+    },
+    {
+      module: "CPOO",
+      type: "UE Fondamentale",
+      subjects: [
+        { name: "Conception des Systèmes d'Information", coeff: 1.5, moyenne: "(3DS+7EX)/10" },
+        { name: "Programmation Java", coeff: 2, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
+    {
+      module: "Bases de données et Réseaux",
+      type: "UE Fondamentale",
+      subjects: [
+        { name: "Ingénierie des Bases de Données", coeff: 1.5, moyenne: "RM (DS+2TP+7EX)/10" },
+        { name: "Services des Réseaux", coeff: 1, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
+    {
+      module: "Langue et Culture d'Entreprise",
+      type: "UE Transversale",
+      subjects: [
+        { name: "Anglais 3", coeff: 1, moyenne: "(DS1+DS2)/2" },
+        { name: "Gestion d'entreprise", coeff: 1, moyenne: "(DS1+DS2)/2" },
+      ],
+    },
+    {
+      module: "Unité optionnelle",
+      type: "UE Optionnelle",
+      subjects: [
+        { name: "Serious Gaming Fundamentals", coeff: 1.5, moyenne: "RM (DS+2TP+7EX)/10" },
+        { name: "Mobile Game Programming", coeff: 1.5, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
   ],
+
   "Semester 2": [
-    { code: "CS201", title: "Algorithms", professor: "Dr. Adams", progress: 60 },
-    { code: "CS202", title: "Database", professor: "Dr. Kim", progress: 75 },
-    { code: "CS203", title: "Operating Systems", professor: "Dr. Green", progress: 45 },
-    { code: "CS204", title: "Web Development", professor: "Dr. Johnson", progress: 90 },
+    {
+      module: "Bases de données",
+      type: "UE Fondamentale",
+      subjects: [
+        { name: "Entrepôts de données", coeff: 1, moyenne: "(3DS+7EX)/10" },
+        { name: "Administration des bases de données", coeff: 1, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
+    {
+      module: "Indexation et Web",
+      type: "UE Fondamentale",
+      subjects: [
+        { name: "Techniques d'indexation et recherche multimédia", coeff: 1, moyenne: "RM (DS+2TP+7EX)/10" },
+        { name: "Technologies et programmation web", coeff: 1.5, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
+    {
+      module: "Compilation & tests",
+      type: "UE Fondamentale",
+      subjects: [
+        { name: "Techniques de compilation", coeff: 1.5, moyenne: "RM (DS+2TP+7EX)/10" },
+        { name: "Tests des logiciels (Certification ISTQB)", coeff: 1, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
+    {
+      module: "Intelligence artificielle",
+      type: "UE Fondamentale",
+      subjects: [
+        { name: "Fondements de l'intelligence artificielle (Programmation IA)", coeff: 2, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
+    {
+      module: "Langue et éthique",
+      type: "UE Transversale",
+      subjects: [
+        { name: "Anglais 4", coeff: 3, moyenne: "(DS1+DS2)/2" },
+        { name: "Droit informatique, protection des données et éthique", coeff: 1, moyenne: "(DS1+DS2)/2" },
+        { name: "Projet fédéré (Méthode Agile)", coeff: 1, moyenne: "CC Moy(TP)" },
+      ],
+    },
+    {
+      module: "Unité optionnelle",
+      type: "UE Optionnelle",
+      subjects: [
+        { name: "Introduction à l’IOT / Game Engine Programming", coeff: 1.5, moyenne: "RM (DS+2TP+7EX)/10" },
+        { name: "Programmation système et réseaux / 3D Modeling and Design", coeff: 1.5, moyenne: "RM (DS+2TP+7EX)/10" },
+      ],
+    },
   ],
 };
 
@@ -21,12 +110,16 @@ export default function MySubjects() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const subjects = semesterData[activeSemester];
-  const filteredSubjects = subjects.filter(
-    (subject) =>
-      subject.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      subject.code.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const modules = semesterData[activeSemester];
+
+  const filteredModules = modules
+    .map((mod) => ({
+      ...mod,
+      subjects: mod.subjects.filter((subj) =>
+        subj.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    }))
+    .filter((mod) => mod.subjects.length > 0);
 
   return (
     <div className="flex flex-col md:flex-row w-screen md:w-full min-h-full">
@@ -41,7 +134,7 @@ export default function MySubjects() {
             <button
               key={semester}
               onClick={() => setActiveSemester(semester)}
-              className={`w-full text-left px-2 py-3 rounded-xl font-semibold transition-all ${
+              className={`w-full text-left px-5 py-3 cursor-pointer rounded-xl font-semibold transition-all ${
                 activeSemester === semester
                   ? "bg-blue-600 text-white shadow-md"
                   : "bg-white text-blue-700 border border-blue-200 hover:bg-blue-50"
@@ -87,7 +180,7 @@ export default function MySubjects() {
           </div>
         </div>
 
-        {/* Subjects Table */}
+        {/* Table */}
         <div className="overflow-x-auto">
           <AnimatePresence mode="wait">
             <motion.table
@@ -96,48 +189,41 @@ export default function MySubjects() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="min-w-full rounded-2xl shadow-md bg-white/70 backdrop-blur-sm border border-blue-100"
+              className="min-w-full bg-white/70 backdrop-blur-sm border border-blue-100 rounded-2xl"
             >
               <thead>
                 <tr className="bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 text-sm uppercase tracking-wide">
-                  <th className="py-3 px-2 text-left font-semibold">Subject</th>
-                  <th className="py-3 px-2 text-left font-semibold">Code</th>
-                  <th className="py-3 px-2 text-left font-semibold">Professor</th>
-                  <th className="py-3 px-2 text-left font-semibold">Progress</th>
+                  <th className="py-3 px-4 text-left font-semibold">Module</th>
+                  <th className="py-3 px-4 text-left font-semibold">UE Type</th>
+                  <th className="py-3 px-4 text-left font-semibold">Subject</th>
+                  <th className="py-3 px-4 text-left font-semibold">Coeff</th>
+                  <th className="py-3 px-4 text-left font-semibold">Moyenne</th>
                 </tr>
               </thead>
               <tbody>
                 <AnimatePresence>
-                  {filteredSubjects.length > 0 ? (
-                    filteredSubjects.map((subject, index) => (
-                      <motion.tr
-                        key={subject.code}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                        className="hover:bg-blue-50/70 transition-all border-t border-blue-100"
-                      >
-                        <td className="py-3 px-4 font-medium text-gray-800 flex items-center gap-2">
-                          <BookOpen className="text-blue-500" size={16} />
-                          {subject.title}
-                        </td>
-                        <td className="py-3 px-2 text-gray-600">{subject.code}</td>
-                        
-                        <td className="py-3 px-2 text-gray-700">{subject.professor}</td>
-                        <td className="py-3 px-2">
-                          <div className="w-full bg-blue-100 h-2 rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${subject.progress}%` }}
-                              transition={{ duration: 0.8, delay: index * 0.1 }}
-                              className="bg-blue-600 h-2 rounded-full"
-                            ></motion.div>
-                          </div>
-                          <p className="text-xs text-blue-700 mt-1">{subject.progress}%</p>
-                        </td>
-                      </motion.tr>
-                    ))
+                  {filteredModules.length > 0 ? (
+                    filteredModules.map((mod) =>
+                      mod.subjects.map((subj, index) => (
+                        <motion.tr
+                          key={subj.name}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.3, delay: index * 0.05 }}
+                          className="border-t border-blue-100 hover:bg-blue-50 transition-all"
+                        >
+                          <td className="py-3 px-4 text-gray-700">{mod.module}</td>
+                          <td className="py-3 px-4 text-gray-700">{mod.type}</td>
+                          <td className="py-3 px-4 font-medium text-gray-800 flex items-center gap-2">
+                            <BookOpen className="text-blue-500" size={16} />
+                            {subj.name}
+                          </td>
+                          <td className="py-3 px-4 text-gray-600">{subj.coeff}</td>
+                          <td className="py-3 px-4 text-gray-600">{subj.moyenne}</td>
+                        </motion.tr>
+                      ))
+                    )
                   ) : (
                     <tr>
                       <td
