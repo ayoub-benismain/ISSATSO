@@ -29,6 +29,7 @@ exports.teacherDashboard = (req, res) => {
 exports.getNotifications = (req, res) => {
   
   const userId = req.user.id; // get user ID from token
+  console.log(userId)
   const query = "SELECT * FROM notifications WHERE user_id = ? ORDER BY pinned DESC, created_at DESC";
 
   db.query(query, [userId], (err, results) => {

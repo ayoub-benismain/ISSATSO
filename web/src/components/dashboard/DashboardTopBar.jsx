@@ -25,7 +25,9 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
         const res = await fetch(`http://localhost:5000/api/dashboard/notifications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         const data = await res.json();
+        console.log(res)
         setNotifications(
           data.slice(0, 5).map((n) => ({
             ...n,
@@ -38,7 +40,7 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
       }
     };
     fetchNotifications();
-  }, []);
+  }, [token]);
 
   const handleMarkRead = async (id) => {
     try {

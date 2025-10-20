@@ -43,8 +43,11 @@ export default function StudentDashboardLayout() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
+
     const token = localStorage.getItem("token");
+
+
+  useEffect(() => {
     if (!token) {
       navigate("/auth/login");
       return;
@@ -67,6 +70,7 @@ export default function StudentDashboardLayout() {
     }
   }, [navigate]);
 
+
   if (!user) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
@@ -81,6 +85,7 @@ export default function StudentDashboardLayout() {
             pageTitle="Student Dashboard"
             user={user}
             setSidebarOpen={setSidebarOpen}
+            token={token}
           
           />
         </div>
