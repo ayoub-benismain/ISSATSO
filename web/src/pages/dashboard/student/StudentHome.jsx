@@ -15,7 +15,7 @@ import ActualitySlider from "../../../components/dashboard/ActualitySlider";
 import ProfileCard from "../../../components/dashboard/ProfileCard";
 import EventCard from "../../../components/dashboard/EventCard";
 
-export default function StudentHome() {
+export default function StudentHome(user , name) {
   const [view, setView] = useState("week");
 
   const weeklyData = [
@@ -118,7 +118,7 @@ export default function StudentHome() {
           className="flex flex-col items-center justify-center px-4 rounded-2xl  border-blue-400/30 backdrop-blur-md h-full"
         >
           
-          <ProfileCard />
+          <ProfileCard user={"student"} name={"Ayoub ben ismain"} />
         </motion.div>
       </div>
 

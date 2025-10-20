@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Edit, Linkedin } from "lucide-react";
+import { Edit, Linkedin } from "lucide-react";  
 
-export default function ProfileCard({ onEdit }) {
+export default function ProfileCard({ onEdit , user , name }) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -26,13 +26,13 @@ export default function ProfileCard({ onEdit }) {
           </div>
         </div>
 
-        <h3 className="font-semibold text-base">Ayoub ben ismain</h3>
-        <p className="text-sm">Student / Teacher</p>
+        <h3 className="font-semibold text-base">{name}</h3>
+        <p className="text-sm">{user}</p>
 
         <div className="mt-1 w-full px-2">
           <div className="flex justify-between text-xs mb-1">
-            <span>Courses</span>
-            <span>16</span>
+            <span>Subjects</span>
+            <span>9</span>
           </div>
           <div className="w-full h-2 rounded-full bg-white/30">
             <div className="h-2 rounded-full bg-white" style={{ width: `${progress}%`, transition: "width 1s" }} />
