@@ -36,7 +36,7 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
           }))
         );
       } catch (err) {
-        console.log(err);
+          console.log(err);
       }
     };
     fetchNotifications();

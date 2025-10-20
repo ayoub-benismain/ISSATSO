@@ -24,6 +24,7 @@ export default function StudentHome(user , name) {
     { day: "Wed", Present: 4, Absent: 2 },
     { day: "Thu", Present: 5, Absent: 1 },
     { day: "Fri", Present: 6, Absent: 0 },
+    {day : "Sat" , Present : 3 , Absent : 2},
   ];
 
   const monthlyData = [
@@ -37,7 +38,7 @@ export default function StudentHome(user , name) {
 
   return (
     <div className="p-6 space-y-6 min-h-screen text-white">
-      {/* 📰 Actuality Slider */}
+      {/* 📰 Actuality Slider */}                     
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
