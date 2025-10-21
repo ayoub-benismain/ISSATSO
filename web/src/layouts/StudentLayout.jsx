@@ -14,9 +14,10 @@ import {
   CalendarClock,
   Bell,
   UserCircle,
+  Code ,
 } from "lucide-react";
 
-import {jwtDecode} from "jwt-decode"; // <--- default import
+import {jwtDecode} from "jwt-decode"; 
 
 const studentPages = [
   { title: "Dashboard", icon: LayoutDashboard, path: "/dashboard/student" },
@@ -28,9 +29,9 @@ const studentPages = [
   { title: "ExtraSessions", icon: CalendarClock, path: "/dashboard/student/extrasessions" }, // Club/School Events
   { title: "GroupList", icon: ClipboardList, path: "/dashboard/student/GroupList" }, // group list
   { title: "Results", icon: FileCheck2, path: "/dashboard/student/results" }, // Grades
-  
   { title: "Notices", icon: Bell, path: "/dashboard/student/notices" },
-  
+  { title: "Lab Reports", icon: Code , path: "/dashboard/student/labreports" },
+
    // Edit info / change password
 ];
 

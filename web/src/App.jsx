@@ -35,6 +35,7 @@ import Chat from "./pages/dashboard/teacher/Chat"
 import EventsTeacher from "./pages/dashboard/teacher/Events";
 import ProfileTeacher from "./pages/dashboard/teacher/Profile";
 import Logout from "./components/dashboard/Logout";
+import LabReport from "./pages/dashboard/student/LabReport";
 
 export default function App() {
   return (
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="notices" element={<NoticesStudent />} />
             <Route path="extrasessions" element={<ExtraSessions />} />
             <Route path="absence" element={<Absence />} />
+            <Route path="labreports" element={<LabReport/>} />
             
           </Route>
 

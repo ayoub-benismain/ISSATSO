@@ -36,7 +36,6 @@ exports.getNotifications = (req, res) => {
     if (err) return res.status(500).json({ message: "Server error", error: err });
     
     res.json(results);
-    console.log("hello")
   });
 };
 
