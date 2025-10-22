@@ -83,8 +83,6 @@ export default function StudentDashboardLayout() {
       <div className="flex-1 flex flex-col">
         <div className="p-4">
           <DashboardTopBar
-            pageTitle="Student Dashboard"
-            user={user}
             setSidebarOpen={setSidebarOpen}
             token={token}
           

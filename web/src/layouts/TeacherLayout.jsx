@@ -14,6 +14,7 @@ import {
   Bell,
   UserCircle,
   MessageCircle,
+  Code
 } from "lucide-react";
 
 import { jwtDecode } from "jwt-decode";
@@ -23,20 +24,28 @@ const teacherPages = [
   { title: "Students / absents", icon: Users, path: "/dashboard/teacher/students" },
   { title: "Documents", icon: FileText, path: "/dashboard/teacher/documents" },
   { title: "Extra Sessions", icon: ClipboardList, path: "/dashboard/teacher/extrasessions" },
+  { title: "Lab Reports", icon: Code, path: "/dashboard/teacher/labreports" },
   { title: "Grades", icon: FileCheck2, path: "/dashboard/teacher/grades" },
   { title: "Schedule", icon: Calendar, path: "/dashboard/teacher/schedule" },
   { title: "Chat", icon: MessageCircle, path: "/dashboard/teacher/chat" },
   { title: "Events", icon: CalendarClock, path: "/dashboard/teacher/events" },
   { title: "Profile", icon: UserCircle, path: "/dashboard/teacher/profile" },
+  
+
 ];
 
 export default function TeacherDashboardLayout() {
+
+
+    const token = localStorage.getItem("token");
+
+
+
   const [user, setUser] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!token) {
       navigate("/auth/login");
       return;
@@ -67,7 +76,7 @@ export default function TeacherDashboardLayout() {
       <SideBar pages={teacherPages} isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardTopBar pageTitle="Teacher Dashboard" user={user} setSidebarOpen={setIsSidebarOpen} />
+        <DashboardTopBar setSidebarOpen={setIsSidebarOpen} token={token} />
         <main className="lg:p-4 overflow-y-auto h-full lg:w-auto w-screen">
           <Outlet />
         </main>

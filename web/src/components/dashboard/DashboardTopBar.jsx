@@ -1,17 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, Bell, ChevronDown, User, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { getUserProfile } from "../../services/user";
 
-export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token }) {
-  const profileActions = [
-    {
-      name: "Profile",
-      icon: <User className="w-4 h-4 text-blue-400" />,
-      path: `/dashboard/${user.role}/profile`,
-    },
-    { name: "Logout", icon: <LogOut className="w-4 h-4 text-red-500" />, path: "/logout" },
-  ];
-
+export default function DashboardTopBar({ setSidebarOpen, token }) {
+  const [user, setUser] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -19,30 +12,54 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
   const notifRef = useRef();
   const navigate = useNavigate();
 
+  // Fetch user profile
   useEffect(() => {
+    if (!token) return;
+
+    getUserProfile(token)
+      .then((data) => setUser(data))
+      .catch((error) => console.error(error));
+  }, [token]);
+
+
+  console.log(user)
+
+  
+
+  // Fetch notifications
+  useEffect(() => {
+    if (!token) return;
+
     const fetchNotifications = async () => {
       try {
         const res = await fetch(`http://localhost:5000/api/dashboard/notifications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        setNotifications(
-          data
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            .slice(0, 5)
-            .map((n) => ({
-              ...n,
-              read_status: Boolean(n.read_status),
-              pinned: Boolean(n.pinned),
-            }))
-        );
+
+        if (Array.isArray(data)) {
+          setNotifications(
+            data
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+              .slice(0, 5)
+              .map((n) => ({
+                ...n,
+                read_status: Boolean(n.read_status),
+                pinned: Boolean(n.pinned),
+              }))
+          );
+        } else {
+          console.warn("Notifications API did not return an array:", data);
+        }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
+
     fetchNotifications();
   }, [token]);
 
+  // Mark notification as read
   const handleMarkRead = async (id) => {
     try {
       await fetch(`http://localhost:5000/api/dashboard/notifications/read/${id}`, {
@@ -53,10 +70,11 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
         prev.map((n) => (n.id === id ? { ...n, read_status: !n.read_status } : n))
       );
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!profileRef.current?.contains(e.target)) setProfileOpen(false);
@@ -68,10 +86,20 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
 
   const unreadCount = notifications.filter((n) => !n.read_status).length;
 
+  // Build profile actions only if user is loaded
+  const profileActions = user
+    ? [
+        {
+          name: "Profile",
+          icon: <User className="w-4 h-4 text-blue-400" />,
+          path: `/dashboard/${user.role}/profile`,
+        },
+        { name: "Logout", icon: <LogOut className="w-4 h-4 text-red-500" />, path: "/logout" },
+      ]
+    : [];
+
   return (
-    <header className="p-4 flex items-center justify-between sticky top-0 z-30 w-full 
-      backdrop-blur-lg bg-white/10 border-b border-gray-200/20">
-      
+    <header className="p-4 flex items-center justify-between sticky top-0 z-30 w-full backdrop-blur-lg bg-white/10 border-b border-gray-200/20">
       {/* Left: Menu + Page Title */}
       <div className="flex items-center gap-4">
         <Menu
@@ -79,7 +107,7 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
           onClick={() => setSidebarOpen(true)}
         />
         <h2 className="text-2xl font-semibold text-gray-800 hidden lg:block tracking-tight">
-          {pageTitle}
+          {user && `${user.role[0].toUpperCase() + user.role.slice(1,) || ""} Dashboard`}
         </h2>
       </div>
 
@@ -108,7 +136,6 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
                   {notifications.length > 0 ? "Recent" : ""}
                 </span>
               </h3>
-
               {notifications.length === 0 ? (
                 <p className="text-sm text-gray-600 text-center py-4">No notifications</p>
               ) : (
@@ -146,11 +173,12 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
               alt="Profile"
               className="w-8 h-8 rounded-full object-cover border border-gray-300/50"
             />
-            <span className="text-sm font-medium text-gray-800">{user?.name || "User"}</span>
+            <span className="text-sm font-medium text-gray-800">{user ? user.username : "..."}</span>
             <ChevronDown className="w-4 h-4 text-gray-600" />
           </button>
 
-          {profileOpen && (
+          {/* Profile Dropdown */}
+          {profileOpen && user && (
             <div className="absolute right-0 mt-3 w-48 bg-white/90 backdrop-blur-md border border-gray-200/40 rounded-2xl shadow-lg z-30 p-3">
               <ul className="text-sm space-y-2">
                 {profileActions.map((action) => (
@@ -160,10 +188,8 @@ export default function DashboardTopBar({ pageTitle, user, setSidebarOpen, token
                       setProfileOpen(false);
                       navigate(action.path);
                     }}
-                    className={`flex items-center gap-2 p-2 rounded-md cursor-pointer hover:bg-gray-100 transition ${
-                      action.name === "Logout"
-                        ? "text-red-500 font-semibold"
-                        : "text-gray-800"
+                    className={`flex items-center gap-2 p-2 rounded-md cursor-pointer hover:bg-gray-100 ${
+                      action.name === "Logout" ? "text-red-500 font-semibold" : "text-gray-800"
                     }`}
                   >
                     {action.icon}

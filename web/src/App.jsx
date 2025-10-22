@@ -23,6 +23,7 @@ import ScheduleStudent from "./pages/dashboard/student/Schedule";
 import NoticesStudent from "./pages/dashboard/student/Notices";
 import ExtraSessions from "./pages/dashboard/student/ExtraSessions";
 import Absence from "./pages/dashboard/student/Absence";
+import ProfileStudent from "./pages/dashboard/student/Profile";
 
 // Teacher Pages
 import TeacherHome from "./pages/dashboard/teacher/TeacherHome";
@@ -36,6 +37,7 @@ import EventsTeacher from "./pages/dashboard/teacher/Events";
 import ProfileTeacher from "./pages/dashboard/teacher/Profile";
 import Logout from "./components/dashboard/Logout";
 import LabReport from "./pages/dashboard/student/LabReport";
+import TeacherLabReports from "./pages/dashboard/teacher/labreports";
 
 export default function App() {
   return (
@@ -72,6 +74,7 @@ export default function App() {
             <Route path="extrasessions" element={<ExtraSessions />} />
             <Route path="absence" element={<Absence />} />
             <Route path="labreports" element={<LabReport/>} />
+            <Route path="profile" element={<ProfileStudent/>} />
             
           </Route>
 
@@ -93,6 +96,7 @@ export default function App() {
             <Route path="chat" element={<Chat />} />
             <Route path="events" element={<EventsTeacher />} />
             <Route path="profile" element={<ProfileTeacher />} />
+            <Route path="labreports" element = {<TeacherLabReports/>} />
             
           </Route>
         </Routes>

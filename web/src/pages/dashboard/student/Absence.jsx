@@ -9,7 +9,7 @@ const subjects = [
   "Cryptographie",
 ];
 
-const timeFilters = ["Day", "Week", "Month", "Semester"];
+const timeFilters = [ "Week", "Month", "Semester"];
 
 const generateData = (filter) => {
   switch (filter) {

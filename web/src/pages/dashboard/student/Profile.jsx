@@ -15,7 +15,7 @@ import CountUp from "react-countup";
 import toast, { Toaster } from "react-hot-toast";
 import { getUserProfile } from "../../../services/user";
 
-export default function ProfileTeacher() {
+export default function ProfileStudent() {
   const [user, setUser] = useState(null);
   const [countUpTrigger, setCountUpTrigger] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
